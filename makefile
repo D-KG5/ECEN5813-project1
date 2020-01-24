@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -Wextra -I.# special constant that adds compiler flags to gcc command automatically
+CFLAGS=-Wall -Wextra -fno-stack-protector # special constant that adds compiler flags to gcc command automatically
 
 SRCS := $(wildcard *.c) # all files with .c extension is stored in the SRCS variable
 BINS := $(SRCS:%.c=%) # all binary files will have their filenames match their .c counterparts
