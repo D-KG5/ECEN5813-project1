@@ -1,8 +1,9 @@
 CC=gcc
-CFLAGS=-Wall -Wextra -I.
+CFLAGS=-Wall -Wextra -I. # special constant that adds compiler flags to gcc command automatically
+
+# Inspired by http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/
 
 all: one two three
-
 
 one: program1.o 
 	$(CC) -o program1 program1.c
