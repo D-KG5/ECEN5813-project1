@@ -6,9 +6,9 @@ int main()
 	char input[20] = {66,114,117,99,101,32,83,97,121,115,32,72,105,33,7,9,50,48,49,57};
 
 	// open output file for writing
-	FILE *fptr = fopen("program2.out", "w");
+	FILE *fptr = fopen("ProgramTwo.out", "w");
 	if(fptr == NULL){
-		printf("Could'nt open file\n");
+		printf("Couldn't open file\n");
 		return -1;
 	}
 
