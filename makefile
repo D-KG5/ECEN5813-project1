@@ -8,14 +8,14 @@ BINS := $(SRCS:%.c=%) # all binary files will have their filenames match their .
 
 all: one two three
 
-one: program1.o
-	$(CC) -o program1 program1.o -lm
+one: one.o
+	$(CC) -o one one.o -lm
 
-two: program2.o
-	$(CC) -o program2 program2.o -lm
+two: two.o
+	$(CC) -o two two.o
 
-three: program3.o
-	$(CC) -o program3 program3.o -lm
+three: three.o
+	$(CC) -o three three.o
 
 clean:
 	rm -rvf *.o ${BINS}

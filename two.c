@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main()
-{
-	char input[20] = {66,114,117,99,101,32,83,97,121,115,32,72,105,33,7,9,50,48,49,57};
+int main(){
+
+	// input char array
+	char input[20] = {66, 114, 117, 99, 101, 32, 83, 97, 121, 115, 32, 72, 105, 33, 7, 9, 50, 48, 49, 57};
 
 	// open output file for writing
 	FILE *fptr = fopen("ProgramTwo.out", "w");
@@ -13,8 +14,7 @@ int main()
 	}
 
 	// iterate over input array and check if ASCII value is in a subset of these, then print to consol and file
-	for (int i = 0; i < 20; i++)
-	{
+	for (int i = 0; i < 20; i++){
 		if(input[i] >= 'a' && input[i] <= 'z'){	// lower case
 			printf("Code: %d    Type: Lower Case    ASCII Char: %c\n", input[i], input[i]);
 			fprintf(fptr, "Code: %d    Type: Lower Case    ASCII Char: %c\n", input[i], input[i]);

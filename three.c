@@ -8,7 +8,7 @@
 void hex2bin(uint16_t hex) {
 	printf("Binary: ");  
     for (uint16_t i = 1 << 15; i > 0; i = i / 2){
-        (hex & i)? printf("1"): printf("0"); 
+        (hex & i) ? printf("1"): printf("0"); 
     }
     printf("    ");
 }
