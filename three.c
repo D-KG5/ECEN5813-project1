@@ -2,21 +2,26 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+// macros for rotate function
 #define RIGHT 1
 #define LEFT 0
 
+// adaptation of dec2bin1s function from program one
 void hex2bin(uint16_t hex) {
-	printf("Binary: ");  
+	printf("Binary: ");
+    // iterate over 16 bits of hex variable
     for (uint16_t i = 1 << 15; i > 0; i = i / 2){
-        (hex & i) ? printf("1"): printf("0"); 
+        (hex & i) ? printf("1") : printf("0"); 
     }
     printf("    ");
 }
 
+// function to check if last 4 bits of binary contain 3 ones and print if True or False
 void bincheck(uint16_t hex) {
 	printf("Result: "); 
 	uint8_t cnt = 0; 
-    for (uint8_t i = 1 << 3; i > 0; i = i / 2){
+    // iterate over last 4 bits and increment cnt if '1' is detected
+    for (uint8_t i = 1 << 4; i > 0; i = i / 2){
         if(hex & i){
         	cnt++;
     	} 
@@ -28,19 +33,28 @@ void bincheck(uint16_t hex) {
     }
 } 
 
-/*Function to rotate n by rot bits. Direction is set by dir*/
-uint16_t rotate(uint16_t n, uint8_t rot, uint8_t dir) { 
+/* 
+    Function to rotate n by rot bits. Direction is set by dir
+    inspired by https://www.geeksforgeeks.org/rotate-bits-of-an-integer/ 
+*/
+uint16_t rotate(uint16_t num, uint8_t rot, uint8_t dir) { 
 	uint16_t res = 0;
 	switch(dir){
 		case(LEFT):
-			/* In n<<d, last d bits are 0. To put first 3 bits of n at  
-			last, do bitwise or of n<<d with n >>(INT_BITS - d) */
-			res = (n << rot)|(n >> (16 - rot));
+			/* 
+                Left shift num by rot 
+                Bitwise OR of that with right shift num by (16 bits - rot)
+                to put first rot bits of num at lsb 
+            */
+			res = (num << rot) | (num >> (16 - rot));
 			break;
 		case(RIGHT):
-			/* In n>>d, first d bits are 0. To put last 3 bits of at  
-			first, do bitwise or of n>>d with n <<(INT_BITS - d) */
-			res = (n >> rot)|(n << (16 - rot)); ;
+            /* 
+                Right shift num by rot 
+                Bitwise OR of that with left shift num by (16 bits - rot)
+                to put first rot bits of num at lsb 
+            */
+			res = (num >> rot) | (num << (16 - rot)); ;
 			break;
 		default:
 			printf("Error rotating\n");
@@ -80,7 +94,7 @@ int main(){
 
     // rotate input hex left by 6
     uint16_t rot_left = rotate(input, 6, LEFT);
-    printf("Rotated left: 0x%X\n", rot_left);
+    printf("Rotated left by 6: 0x%X\n", rot_left);
 
     hex2bin(rot_left);
     uint16_t rot_left_bits = rot_left & 0xF;
@@ -88,7 +102,7 @@ int main(){
 
     // rotate input hex right by 6
     uint16_t rot_right = rotate(input, 6, RIGHT);
-    printf("Rotated right: 0x%X\n", rot_right);
+    printf("Rotated right by 6: 0x%X\n", rot_right);
 
     hex2bin(rot_right);
     uint16_t rot_right_bits = rot_right & 0xF;
