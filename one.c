@@ -67,83 +67,91 @@ int main(void){
 
 	// iterate over 2D array (input[i][0] = value, input[i][1] = radix, input [i][2] = operand)
 	for(int i = 0; i < 11; i++){
+		// print headers for each input variable to file
+		fprintf(fptr, "\nInput:				Value %d    Radix %d		Operand %d\n", input[i][0], input[i][1], input[i][2]);
 		// check if radix and operands are valid, else print Error to file. Formatting is wonky though
 		if(((input[i][1] == 8) || (input[i][1] == 10) || (input[i][1] == 16)) && ((input[i][2] == 4) || (input[i][2] == 8) || (input[i][2] == 16))){
-			// print headers for each input variable to file
-			fprintf(fptr, "\nInput:				Value %d    Radix %d		Operand %d\n", input[i][0], input[i][1], input[i][2]);
-			fprintf(fptr, "Output:				Value		Maximum		Minimum\n");
+			// check if value fits inside operand limited integer value size
+			if((((input[i][0] >= -8)  && (input[i][0] <= 7)) && (input[i][2] == 4)) || 
+				(((input[i][0] >= -128)  && (input[i][0] <= 127)) && (input[i][2] == 8)) || 
+				(((input[i][0] >= -32768)  && (input[i][0] <= 32767)) && (input[i][2] == 16))){
+				// print headers for each input variable to file
+				fprintf(fptr, "Output:				Value		Maximum		Minimum\n");
 
-			// print absolute binary of input variable to file
-			fprintf(fptr, "Binary (abs):			0b");
-			dec2bin(input[i][0]);
+				// print absolute binary of input variable to file
+				fprintf(fptr, "Binary (abs):			0b");
+				dec2bin(input[i][0]);
 
-			// print maximum of absolute binary to file
-			fprintf(fptr, "	0b");
-			double max_size = pow((double)2, (double)input[i][2]);
-			max_size -= 1;
-			dec2bin((uint32_t)max_size);
+				// print maximum of absolute binary to file
+				fprintf(fptr, "	0b");
+				double max_size = pow((double)2, (double)input[i][2]);
+				max_size -= 1;
+				dec2bin((uint32_t)max_size);
 
-			// print minimum of absolute binary to file
-			fprintf(fptr, "	0b");
-			dec2bin2s(0, (input[i][2] - 1));
+				// print minimum of absolute binary to file
+				fprintf(fptr, "	0b");
+				dec2bin2s(0, (input[i][2] - 1));
 
-			// print val, max, min for absolute octal, decimal, hex to file
-			fprintf(fptr, "\nOctal (abs):		           0%o       	0%o			0\n", abs(input[i][0]), (uint32_t)max_size);
+				// print val, max, min for absolute octal, decimal, hex to file
+				fprintf(fptr, "\nOctal (abs):		           0%o       	0%o			0\n", abs(input[i][0]), (uint32_t)max_size);
 
-			fprintf(fptr, "Decimal (abs): 		         %d        	%d			0\n", abs(input[i][0]), (uint32_t)max_size);
+				fprintf(fptr, "Decimal (abs): 		         %d        	%d			0\n", abs(input[i][0]), (uint32_t)max_size);
 
-			fprintf(fptr, "Hex (abs):    		        0x%X       	0x%X			0x0\n", abs(input[i][0]), (uint32_t)max_size);
+				fprintf(fptr, "Hex (abs):    		        0x%X       	0x%X			0x0\n", abs(input[i][0]), (uint32_t)max_size);
 
-			// print 1's complement binary to file
-			fprintf(fptr, "Binary (1's):			0b");
-			dec2bin1s(input[i][0], input[i][2]);
+				// print 1's complement binary to file
+				fprintf(fptr, "Binary (1's):			0b");
+				dec2bin1s(input[i][0], (input[i][2] - 1));
 
-			// print max 1's complement binary to file
-			double max_size1 = pow((double)2, ((double)input[i][2]));
-			max_size1 -= 1;
-			fprintf(fptr, "	0b");
-			dec2bin((uint32_t)max_size1);
+				// print max 1's complement binary to file
+				double max_size1 = pow((double)2, ((double)input[i][2]));
+				max_size1 -= 1;
+				fprintf(fptr, "	0b");
+				dec2bin((uint32_t)max_size1);
 
-			// print min 1's complement binary to file
-			double min_size1 = pow((double)2, ((double)input[i][2] - 1));
-			fprintf(fptr, "	0b");
-			dec2bin((uint32_t)min_size1);
-			fprintf(fptr, "\n");
+				// print min 1's complement binary to file
+				double min_size1 = pow((double)2, ((double)input[i][2] - 1));
+				fprintf(fptr, "	0b");
+				dec2bin((uint32_t)min_size1);
+				fprintf(fptr, "\n");
 
-			// print 2's complement binary to file
-			fprintf(fptr, "Binary (2's):			0b");
-			dec2bin2s(input[i][0], input[i][2]);
+				// print 2's complement binary to file
+				fprintf(fptr, "Binary (2's):			0b");
+				dec2bin2s(input[i][0], (input[i][2] - 1));
 
-			// print max 2's complement binary to file
-			double max_size2 = pow((double)2, ((double)input[i][2]));
-			max_size2 -= 1;
-			fprintf(fptr, "	0b");
-			dec2bin((uint32_t)max_size2);
+				// print max 2's complement binary to file
+				double max_size2 = pow((double)2, ((double)input[i][2]));
+				max_size2 -= 1;
+				fprintf(fptr, "	0b");
+				dec2bin((uint32_t)max_size2);
 
-			// print min 2's complement binary to file
-			double min_size2 = pow((double)2, ((double)input[i][2] - 1));
-			min_size2 += 1;
-			fprintf(fptr, "	0b");
-			dec2bin((uint32_t)min_size2);
+				// print min 2's complement binary to file
+				double min_size2 = pow((double)2, ((double)input[i][2] - 1));
+				min_size2 += 1;
+				fprintf(fptr, "	0b");
+				dec2bin((uint32_t)min_size2);
 
-			fprintf(fptr, "\n");
+				fprintf(fptr, "\n");
 
-			// print sign magnitude binary to file
-			fprintf(fptr, "Binary (sign mag):		0b");
-			dec2binmag(input[i][0]);
+				// print sign magnitude binary to file
+				fprintf(fptr, "Binary (sign mag):		0b");
+				dec2binmag(input[i][0]);
 
-			// print max sign magnitude binary to file
-			double max_sizem = pow((double)2, ((double)input[i][2] - 1));
-			max_sizem -= 1;
-			fprintf(fptr, "	0b");
-			dec2binmag((uint32_t)max_sizem);
+				// print max sign magnitude binary to file
+				double max_sizem = pow((double)2, ((double)input[i][2] - 1));
+				max_sizem -= 1;
+				fprintf(fptr, "	0b");
+				dec2binmag((uint32_t)max_sizem);
 
-			// print min sign magnitude binary to file
-			fprintf(fptr, "	0b");
-			dec2binmag(-((uint32_t)max_sizem));
-			fprintf(fptr, "\n");
+				// print min sign magnitude binary to file
+				fprintf(fptr, "	0b");
+				dec2binmag(-((uint32_t)max_sizem));
+				fprintf(fptr, "\n");
+			} else{
+				fprintf(fptr, "Error\n");
+			}
 		} else{
-			fprintf(fptr, "\nError\n");
+			fprintf(fptr, "Error: not a valid operand or radix\n");
 		}
 	}
 	fclose(fptr);
