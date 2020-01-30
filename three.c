@@ -2,11 +2,19 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+/*
+    Program three by Dhruva Koley and Sagar Eligar
+*/
+
 // macros for rotate function
 #define RIGHT 1
 #define LEFT 0
 
-// adaptation of dec2bin1s function from program one
+/* 
+   adaptation of dec2bin1s function from program one
+   inspired by https://www.geeksforgeeks.org/binary-representation-of-a-given-number/
+   Author: Narendra Kangralkar
+*/
 void hex2bin(uint16_t hex) {
 	printf("Binary: ");
     // iterate over 16 bits of hex variable
@@ -35,7 +43,8 @@ void bincheck(uint16_t hex) {
 
 /* 
     Function to rotate n by rot bits. Direction is set by dir
-    inspired by https://www.geeksforgeeks.org/rotate-bits-of-an-integer/ 
+    inspired by https://www.geeksforgeeks.org/rotate-bits-of-an-integer/
+    Author: SoumikMondal 
 */
 uint16_t rotate(uint16_t num, uint8_t rot, uint8_t dir) { 
 	uint16_t res = 0;
@@ -75,6 +84,7 @@ int main(){
     ogarr[1] = (input >> 4) & 0xF;	// C
     ogarr[0] = input & 0xF;	// E
 
+    // print binary and check last 4 bits for exactly 3 'ones'
     hex2bin(input);
     bincheck(ogarr[0]);
 
@@ -89,6 +99,7 @@ int main(){
     revarr[1] = ogarr[2];	// A
     revarr[0] = ogarr[3];	// F
 
+    // print binary and check last 4 bits for exactly 3 'ones'
     hex2bin(rev);
     bincheck(revarr[0]);
 

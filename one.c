@@ -3,6 +3,10 @@
 #include <stdint.h>
 #include <math.h>
 
+/*
+	Program one by Dhruva Koley and Sagar Eligar
+*/
+
 // input 2D array
 int32_t input[11][3] = {{-7, 10, 4}, { -7, 9, 4}, {-7, 10, 5}, {-10, 10, 4}, {236, 10, 8}, {0354, 8, 8}, {0xEB, 16, 8}, {-125, 10, 8}, {65400, 10, 8}, {65400, 10, 16}, {-32701, 10, 16}};
 
@@ -11,6 +15,7 @@ static FILE *fptr;	// declare file pointer for output file
 /*
 	recursive function to print binary of an absolute decimal
 	inspired by https://www.geeksforgeeks.org/binary-representation-of-a-given-number/
+	Author: Narendra Kangralkar
 */
 void dec2bin(int32_t dec){
 	uint32_t absdec = abs(dec);
@@ -46,6 +51,7 @@ if((((dec >= -8)  && (dec <= 7)) && (operand == 3)) ||
 /*
 	function to print 1's complement binary. 
 	inspired by https://www.geeksforgeeks.org/binary-representation-of-a-given-number/
+	Author: Narendra Kangralkar
 */
 void dec2bin1s(int32_t dec, uint16_t operand){
 	// check if value fits inside operand limited integer value size

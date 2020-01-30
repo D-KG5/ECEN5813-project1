@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(){
+/*
+	Program two by Dhruva Koley and Sagar Eligar
+*/
 
+int main(){
 	// input char array
 	char input[20] = {66, 114, 117, 99, 101, 32, 83, 97, 121, 115, 32, 72, 105, 33, 7, 9, 50, 48, 49, 57};
 
