@@ -6,12 +6,12 @@
     Program three by Dhruva Koley and Sagar Eligar
 */
 
-// macros for rotate function
+// rotation direction macros for rotate function
 #define RIGHT 1
 #define LEFT 0
 
 /* 
-   adaptation of dec2bin1s function from program one
+   adaptation of dec2bin function from program one
    inspired by https://www.geeksforgeeks.org/binary-representation-of-a-given-number/
    Author: Narendra Kangralkar
 */
@@ -24,7 +24,7 @@ void hex2bin(uint16_t hex) {
     printf("    ");
 }
 
-// function to check if last 4 bits of binary contain 3 ones and print if True or False
+// function to check if last 4 bits of binary contain exactly 3 ones and print if True or False
 void bincheck(uint16_t hex) {
 	printf("Result: "); 
 	uint8_t cnt = 0; 

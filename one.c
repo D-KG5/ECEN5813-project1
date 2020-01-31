@@ -13,34 +13,54 @@ int32_t input[11][3] = {{-7, 10, 4}, { -7, 9, 4}, {-7, 10, 5}, {-10, 10, 4}, {23
 static FILE *fptr;	// declare file pointer for output file
 
 /*
-	recursive function to print binary of an absolute decimal
+	function to print binary of an absolute decimal
 	inspired by https://www.geeksforgeeks.org/binary-representation-of-a-given-number/
 	Author: Narendra Kangralkar
 */
-void dec2bin(int32_t dec){
+void dec2bin(int32_t dec, uint16_t operand){
+	uint32_t absdec = abs(dec);
+	// check if value fits inside operand limited unsigned integer value size
+	if(((absdec <= 15) && (operand == 3)) || ((absdec <= 255) && (operand == 7)) || ((absdec <= 65536) && (operand == 15))){
+		    int32_t i; 
+		    // iterate over decimal of bit size (operand) and print 1 or 0 based on its negated absolute value
+		    for (i = 1 << operand; i > 0; i = i / 2){
+		        (absdec & i) ? fprintf(fptr, "1") : fprintf(fptr, "0"); 
+		    }
+	    } else{
+		fprintf(fptr, "Error	");
+	}
+	return;
+}
+
+/*
+	helper recursive function for dec2binmag to print magnitude of sign mag binary
+	inspired by https://www.geeksforgeeks.org/binary-representation-of-a-given-number/
+	Author: Narendra Kangralkar
+*/
+void dec2binmaghelper(int32_t dec){
 	uint32_t absdec = abs(dec);
 	if(absdec > 1){
-		dec2bin(absdec / 2);
+		dec2binmaghelper(absdec / 2);
 	}
 
 	fprintf(fptr, "%d", absdec % 2);
 	return;
 }
 
-// wrapper function to print sign magnitude binary from a decimal
+// function to print sign magnitude binary from a decimal
 void dec2binmag(int32_t dec, uint16_t operand){
-	// check if value fits inside operand limited integer value size
-if((((dec >= -8)  && (dec <= 7)) && (operand == 3)) || 
-	(((dec >= -128)  && (dec <= 127)) && (operand == 7)) || 
-	(((dec >= -32768)  && (dec <= 32767)) && (operand == 15))){
-		// if decimal is positive then print 1 and invoke dec2bin, else print 0 and invoke dec2bin
+	// check if value fits inside operand limited signed integer value size
+	if((((dec >= -8)  && (dec <= 7)) && (operand == 3)) || 
+		(((dec >= -128)  && (dec <= 127)) && (operand == 7)) || 
+		(((dec >= -32768)  && (dec <= 32767)) && (operand == 15))){
+		// if decimal is positive then print 1 and invoke dec2binmaghelper, else print 0 and invoke dec2binmaghelper
 		if(dec < 0){
 			fprintf(fptr, "1");
-			dec2bin(dec);
+			dec2binmaghelper(dec);
 		}
 		else{
 			fprintf(fptr, "0");
-			dec2bin(dec);
+			dec2binmaghelper(dec);
 		}
 	} else{
 		fprintf(fptr, "Error	");
@@ -54,7 +74,7 @@ if((((dec >= -8)  && (dec <= 7)) && (operand == 3)) ||
 	Author: Narendra Kangralkar
 */
 void dec2bin1s(int32_t dec, uint16_t operand){
-	// check if value fits inside operand limited integer value size
+	// check if value fits inside operand limited signed integer value size
 	if((((dec >= -8)  && (dec <= 7)) && (operand == 3)) || 
 		(((dec >= -128)  && (dec <= 127)) && (operand == 7)) || 
 		(((dec >= -32768)  && (dec <= 32767)) && (operand == 15))){
@@ -70,7 +90,7 @@ void dec2bin1s(int32_t dec, uint16_t operand){
 
 // function to print 2's complement binary. Adapted from dec2bin1s
 void dec2bin2s(int32_t dec, uint16_t operand){
-		// check if value fits inside operand limited integer value size
+	// check if value fits inside operand limited signed integer value size
 	if((((dec >= -8)  && (dec <= 7)) && (operand == 3)) || 
 		(((dec >= -128)  && (dec <= 127)) && (operand == 7)) || 
 		(((dec >= -32768)  && (dec <= 32767)) && (operand == 15))){
@@ -103,24 +123,36 @@ int main(void){
 
 			// print absolute binary of input variable to file
 			fprintf(fptr, "Binary (abs):			0b");
-			dec2bin(input[i][0]);
+			dec2bin(input[i][0], (input[i][2] - 1));
 
 			// print maximum of absolute binary to file
 			fprintf(fptr, "	0b");
 			double max_size = pow((double)2, (double)input[i][2]);
 			max_size -= 1;
-			dec2bin((uint32_t)max_size);
+			dec2bin((uint32_t)max_size, (input[i][2] - 1));
 
 			// print minimum of absolute binary to file
 			fprintf(fptr, "	0b");
 			dec2bin2s(0, (input[i][2] - 1));
 
-			// print val, max, min for absolute octal, decimal, hex to file
-			fprintf(fptr, "\nOctal (abs):		           0%o       	0%o			0\n", abs(input[i][0]), (uint32_t)max_size);
+			// check if value fits inside operand limited unsigned integer value size
+			if((((abs(input[i][0]) >= 0)  && (abs(input[i][0]) <= 15)) && (input[i][2] == 4)) || 
+				(((abs(input[i][0]) >= 0)  && (abs(input[i][0]) <= 255)) && (input[i][2] == 8)) || 
+				(((abs(input[i][0]) >= 0)  && (abs(input[i][0]) <= 65536)) && (input[i][2] == 16))){
+				// print val, max, min for absolute octal, decimal, hex to file
+				fprintf(fptr, "\nOctal (abs):		           0%o       	0%o			0\n", abs(input[i][0]), (uint32_t)max_size);
 
-			fprintf(fptr, "Decimal (abs): 		         %d        	%d			0\n", abs(input[i][0]), (uint32_t)max_size);
+				fprintf(fptr, "Decimal (abs): 		         %d        	%d			0\n", abs(input[i][0]), (uint32_t)max_size);
 
-			fprintf(fptr, "Hex (abs):    		        0x%X       	0x%X			0x0\n", abs(input[i][0]), (uint32_t)max_size);
+				fprintf(fptr, "Hex (abs):    		        0x%X       	0x%X			0x0\n", abs(input[i][0]), (uint32_t)max_size);
+			} else{
+				// print val, max, min for absolute octal, decimal, hex to file
+				fprintf(fptr, "\nOctal (abs):		           Error       	0%o			0\n", (uint32_t)max_size);
+
+				fprintf(fptr, "Decimal (abs): 		         Error        	%d			0\n", (uint32_t)max_size);
+
+				fprintf(fptr, "Hex (abs):    		        Error       	0x%X			0x0\n", (uint32_t)max_size);
+			}
 
 			// print 1's complement binary to file
 			fprintf(fptr, "Binary (1's):			0b");
@@ -130,12 +162,12 @@ int main(void){
 			double max_size1 = pow((double)2, ((double)input[i][2]));
 			max_size1 -= 1;
 			fprintf(fptr, "	0b");
-			dec2bin((uint32_t)max_size1);
+			dec2bin((uint32_t)max_size1, (input[i][2] - 1));
 
 			// print min 1's complement binary to file
 			double min_size1 = pow((double)2, ((double)input[i][2] - 1));
 			fprintf(fptr, "	0b");
-			dec2bin((uint32_t)min_size1);
+			dec2bin((uint32_t)min_size1, (input[i][2] - 1));
 			fprintf(fptr, "\n");
 
 			// print 2's complement binary to file
@@ -146,13 +178,13 @@ int main(void){
 			double max_size2 = pow((double)2, ((double)input[i][2]));
 			max_size2 -= 1;
 			fprintf(fptr, "	0b");
-			dec2bin((uint32_t)max_size2);
+			dec2bin((uint32_t)max_size2, (input[i][2] - 1));
 
 			// print min 2's complement binary to file
 			double min_size2 = pow((double)2, ((double)input[i][2] - 1));
 			min_size2 += 1;
 			fprintf(fptr, "	0b");
-			dec2bin((uint32_t)min_size2);
+			dec2bin((uint32_t)min_size2, (input[i][2] - 1));
 
 			fprintf(fptr, "\n");
 
